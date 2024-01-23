@@ -1,0 +1,16 @@
+version: '3.9'
+
+networks:
+  dev_network:
+
+services:
+
+  db:
+    build: db
+    ports:
+      - "5432:5432"
+    container_name: users_api_db_main
+    networks:
+      dev_network:
+        aliases:
+          - db-main

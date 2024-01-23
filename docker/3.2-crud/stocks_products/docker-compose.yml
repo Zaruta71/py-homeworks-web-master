@@ -1,0 +1,65 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres
+    restart: always
+    networks:
+      - backend
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=crud
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=12345
+    container_name: postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  migration:
+    image: django
+    build: .
+    command: python manage.py migrate --noinput
+    networks:
+      - backend
+    depends_on:
+      db:
+        condition: service_healthy
+
+  django:
+    build: .
+    container_name: django
+    command: gunicorn hello_django.wsgi:application --bind 0.0.0.0:8000
+    networks:
+      - backend
+    volumes:
+      - .:/app
+    ports:
+      - 8000:8000
+    depends_on:
+      - migration
+      - db
+
+  nginx:
+    build: ./nginx
+    networks:
+      - backend
+    ports:
+      - 1337:80
+    depends_on:
+      - django
+
+networks:
+  backend:
+    name: backend
+
+volumes:
+  postgres_data:
+
+
+
+
+
