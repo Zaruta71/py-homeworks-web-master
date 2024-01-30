@@ -2,12 +2,11 @@
 
 Revision ID: 6c712feb869e
 Revises: 
-Create Date: 2022-04-17 20:22:46.093272
+Create Date: 2024-02-04 20:22:46.093272
 
 """
 from alembic import op
 import sqlalchemy as sa
-
 
 # revision identifiers, used by Alembic.
 revision = '6c712feb869e'
