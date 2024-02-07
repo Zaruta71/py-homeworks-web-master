@@ -40,8 +40,7 @@ async def get_info(url) -> dict:
 
 async def info_list(url):
     result = await asyncio.gather(*[get_info(i) for i in url])
-
-    result =  ", ".join([i.get('title') for i in result])
+    result = ", ".join([i.get('title') for i in result])
     return result
 
 async def save_person_in_db(p_data):
@@ -53,7 +52,7 @@ async def save_person_in_db(p_data):
                 films = asyncio.run(info_list(person['films']))
                 gender = person['gender']
                 hair_color = person['hair_color']
-                height = int(person['eye_color'])
+                height = int(person['height'])
                 homeworld = person['homeworld']
                 mass = int(person['mass'])
                 name = person['name']
